@@ -5,6 +5,7 @@ namespace Tests\Feature\EateryManagement;
 use Tests\TestCase;
 use App\Models\Menu;
 use App\Models\Eatery;
+use App\Models\Review;
 use App\Models\Category;
 use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class ShowEateryTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_view_eatery()
+    function user_can_view_eatery()
     {
         $this->withoutExceptionHandling();
         Storage::fake('public');
@@ -24,8 +25,6 @@ class ShowEateryTest extends TestCase
         $eatery = Eatery::factory()->create([
             'title' => '만랩커피 강남점',
             'poster_image_path' => $posterImagePath = File::image('eatery-poster.png', 325, 200)->store('posters', 'public'),
-            'grade' => 2.1,
-            'review_count' => 26,
             'delivery_time' => '25~50',
             'delivery_charge' => 2000,
             'minimum_order_amount' => 12000,
@@ -35,6 +34,8 @@ class ShowEateryTest extends TestCase
             ['name' => '메인메뉴'],
             ['name' => '세트메뉴'],
         ]);
+
+        Review::factory(10)->create(['eatery_title' => $eatery->title, 'grade' => 4]);
 
         Menu::factory()->create([
             'title' => '블랙 피넛 커피',
@@ -52,8 +53,8 @@ class ShowEateryTest extends TestCase
                 'id' => 1,
                 'title' => '만랩커피 강남점',
                 'poster_image' => '/storage/'.$posterImagePath,
-                'grade' => 2.1,
-                'review_count' => 26,
+                'grade' => 4.0,
+                'review_count' => 10,
                 'delivery_time' => '25~50',
                 'delivery_charge' => '2,000',
                 'minimum_order_amount' => '12,000',

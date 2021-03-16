@@ -15,10 +15,10 @@ class CreateEateriesTable extends Migration
     {
         Schema::create('eateries', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->string('poster_image_path');
-            $table->float('grade', 1, 1);
-            $table->integer('review_count');
+            $table->float('grade', 1, 1)->default(0);
+            $table->integer('review_count')->default(0);
             $table->string('delivery_time');
             $table->integer('delivery_charge');
             $table->integer('minimum_order_amount');

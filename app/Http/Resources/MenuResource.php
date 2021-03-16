@@ -12,9 +12,9 @@ class MenuResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'price' => number_format($this->price),
+            'price' => $this->price_in_wons,
             'description' => $this->description,
-            'image' => Storage::disk('public')->url($this->image_path),
+            'image' => $this->image_url,
         ];
     }
 }
