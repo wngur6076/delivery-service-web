@@ -27,7 +27,7 @@ class ReviewFactory extends Factory
                 return User::factory()->create()->id;
             },
             'grade' => $this->faker->numberBetween(1, 5),
-            'photo_path' => $this->faker->randomElement([null, config("app.url").'/storage/reviews/test.png']),
+            'photo_path' => $this->faker->randomElement([null, 'reviews/test.jpeg']),
             'content' => $this->faker->realText($this->faker->numberBetween(10, 50)),
             'eatery_title' => "{$this->faker->word} {$this->faker->city}",
         ];

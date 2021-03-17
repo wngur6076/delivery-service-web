@@ -25,7 +25,7 @@ class MenuFactory extends Factory
             'title' => $this->faker->company,
             'price' => $this->faker->numberBetween(5000, 20000),
             'description' => $this->faker->realText(15),
-            'image_path' => config("app.url").'/storage/menus/test.png',
+            'image_path' => 'menus/test.jpeg',
         ];
     }
 }

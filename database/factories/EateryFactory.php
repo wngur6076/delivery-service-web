@@ -24,7 +24,7 @@ class EateryFactory extends Factory
         $deliveryTimeStart = $this->faker->numberBetween(10, 40);
         return [
             'title' => "{$this->faker->word} {$this->faker->city} {$this->faker->randomDigit}",
-            'poster_image_path' => config("app.url").'/storage/posters/test.png',
+            'poster_image_path' => 'posters/test.jpeg',
             'delivery_time' => "{$deliveryTimeStart}~{$this->faker->numberBetween($deliveryTimeStart+10, $deliveryTimeStart+40)}",
             'delivery_charge' => $this->faker->randomNumber(4),
             'minimum_order_amount' => $this->faker->randomElement([5000, 9500, 12000, 15000, 20000]),

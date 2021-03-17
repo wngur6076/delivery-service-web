@@ -1,0 +1,55 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "쿠팡이츠 클론코딩",
+        "contact": {
+            "email": "wngur6076@naver.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "테스트 서버"
+        }
+    ],
+    "paths": {
+        "/eateries/{id}": {
+            "get": {
+                "tags": [
+                    "음식점 관련"
+                ],
+                "summary": "특정 음식점 가져오기",
+                "description": "특정 음식점 아이템을 가져온다.",
+                "operationId": "getTodoById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "eatery_id(1~50 test-case 있음)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
