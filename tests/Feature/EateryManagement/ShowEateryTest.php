@@ -28,22 +28,20 @@ class ShowEateryTest extends TestCase
             'delivery_time' => '25~50',
             'delivery_charge' => 2000,
             'minimum_order_amount' => 12000,
-        ]);
-        $eatery->menuCategories()->createMany([
+        ])->addCategories([
             ['name' => '추천메뉴'],
             ['name' => '메인메뉴'],
             ['name' => '세트메뉴'],
         ]);
 
-        Review::factory(10)->create(['eatery_title' => $eatery->title, 'grade' => 4]);
+        Review::factory(3)->create(['eatery_title' => $eatery->title, 'grade' => 4]);
 
         Menu::factory()->create([
             'title' => '블랙 피넛 커피',
             'price' => 4800,
             'description' => '피넛을 넣은 커피',
             'image_path' => $menuImagePath = File::image('menu1.png', 325, 200)->store('menus', 'public'),
-        ])->categories()->sync(Category::whereIn('name', ['추천메뉴'])->pluck('id'));
-        // ->syncCategories(['추천메뉴']);
+        ])->syncCategories(['추천메뉴'], $eatery->id);
 
         $response = $this->json('GET',"api/eateries/{$eatery->id}");
 
@@ -54,7 +52,7 @@ class ShowEateryTest extends TestCase
                 'title' => '만랩커피 강남점',
                 'poster_image' => '/storage/'.$posterImagePath,
                 'grade' => 4.0,
-                'review_count' => 10,
+                'review_count' => 3,
                 'delivery_time' => '25~50',
                 'delivery_charge' => '2,000',
                 'minimum_order_amount' => '12,000',

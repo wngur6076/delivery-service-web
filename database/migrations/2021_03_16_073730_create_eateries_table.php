@@ -17,7 +17,7 @@ class CreateEateriesTable extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->string('poster_image_path');
-            $table->float('grade', 1, 1)->default(0);
+            $table->float('grade', 8, 1)->default(0);
             $table->integer('review_count')->default(0);
             $table->string('delivery_time');
             $table->integer('delivery_charge');

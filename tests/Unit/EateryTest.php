@@ -126,4 +126,16 @@ class EateryTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
         Eatery::findByTitle('NONEXISTENTTITLE');
     }
+
+    /** @test */
+    function can_add_categories()
+    {
+        $eatery = Eatery::factory()->create()->addCategories([
+            ['name' => '추천메뉴'],
+            ['name' => '메인메뉴'],
+            ['name' => '세트메뉴'],
+        ]);
+
+        $this->assertEquals(3, $eatery->menuCategories()->count());
+    }
 }

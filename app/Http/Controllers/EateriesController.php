@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\EateryResource;
-use App\Http\Resources\MenuCategoryResource;
 use App\Models\Eatery;
-use App\Models\Review;
 use Illuminate\Http\Request;
 
 class EateriesController extends Controller

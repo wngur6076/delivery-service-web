@@ -41,4 +41,11 @@ class Eatery extends Model
     {
         return number_format(Review::where('eatery_title', $this->title)->pluck('grade')->average(), 1);
     }
+
+    public function addCategories($categories)
+    {
+        $this->menuCategories()->createMany($categories);
+
+        return $this;
+    }
 }
