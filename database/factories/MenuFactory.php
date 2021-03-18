@@ -22,9 +22,9 @@ class MenuFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->company,
+            'name' => $this->faker->company,
             'price' => $this->faker->numberBetween(5000, 20000),
-            'description' => $this->faker->realText(15),
+            'description' => $this->faker->randomElement([$this->faker->realText($this->faker->numberBetween(10, 25)), null]),
             'image_path' => 'menus/test.jpeg',
         ];
     }

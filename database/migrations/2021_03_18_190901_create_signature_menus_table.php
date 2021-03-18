@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenusTable extends Migration
+class CreateSignatureMenusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('signature_menus', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('menu_group_id');
-            $table->string('name');
-            $table->integer('price');
-            $table->string('description')->nullable();
-            $table->string('image_path');
+            $table->unsignedBigInteger('eatery_id');
+            $table->unsignedBigInteger('menu_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('signature_menus');
     }
 }

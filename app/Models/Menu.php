@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\CategorySyncFailedException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Menu extends Model

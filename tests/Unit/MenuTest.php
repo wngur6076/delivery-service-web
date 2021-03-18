@@ -7,7 +7,6 @@ use App\Models\Menu;
 use App\Models\Eatery;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Exceptions\CategorySyncFailedException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MenuTest extends TestCase

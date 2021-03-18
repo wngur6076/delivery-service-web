@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\EateryResource;
 use App\Models\Eatery;
 use Illuminate\Http\Request;
+use App\Http\Resources\EateryResource;
+use App\Http\Resources\MenuGroupResource;
+use App\Http\Resources\MenuResource;
 
 class EateriesController extends Controller
 {
@@ -42,7 +44,18 @@ class EateriesController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'data' => new EateryResource($eatery),
+            'data' => [
+                'id' => $eatery->id,
+                'title' => $eatery->title,
+                'poster_image' => $eatery->poster_image_url,
+                'grade' => $eatery->grade,
+                'review_count' => $eatery->review_count,
+                'delivery_time' => $eatery->delivery_time,
+                'delivery_charge' => $eatery->delivery_charge_in_wons,
+                'minimum_order_amount' => $eatery->minimum_order_amount_in_wons,
+                'menu_groups' => $eatery->signatureMenus->isEmpty() ? MenuGroupResource::collection($eatery->menuGroups)
+                    :  MenuGroupResource::collection($eatery->menuGroups)->prepend(['name' => '추천메뉴', 'menus' => MenuResource::collection($eatery->signatureMenus)]),
+            ],
         ], 200);
     }
 }

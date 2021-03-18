@@ -17,6 +17,16 @@ class Eatery extends Model
         return self::where('title', $title)->firstOrFail();
     }
 
+    public function menuGroups()
+    {
+        return $this->hasMany(MenuGroup::class);
+    }
+
+    public function signatureMenus()
+    {
+        return $this->belongsToMany(Menu::class, 'signature_menus');
+    }
+
     public function menuCategories()
     {
         return $this->hasMany(Category::class);
@@ -48,4 +58,5 @@ class Eatery extends Model
 
         return $this;
     }
+
 }
