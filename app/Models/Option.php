@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OptionGroup extends Model
+class Option extends Model
 {
     use HasFactory;
-
-    public function options()
-    {
-        return $this->hasMany(Option::class);
-    }
 }

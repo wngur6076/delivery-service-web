@@ -10,6 +10,11 @@ class Menu extends Model
 {
     use HasFactory;
 
+    public function optionGroups()
+    {
+        return $this->belongsToMany(OptionGroup::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return Storage::disk('public')->url($this->image_path);

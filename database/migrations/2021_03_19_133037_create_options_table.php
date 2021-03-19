@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOptionGroupsTable extends Migration
+class CreateOptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateOptionGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('option_groups', function (Blueprint $table) {
+        Schema::create('options', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('option_group_id');
             $table->string('name');
-            $table->boolean('required');
-            $table->integer('min');
-            $table->integer('max');
+            $table->integer('price');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateOptionGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('option_groups');
+        Schema::dropIfExists('options');
     }
 }
