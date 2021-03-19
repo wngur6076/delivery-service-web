@@ -22,7 +22,8 @@ class OptionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->city,
+            'price' => $this->faker->numberBetween(0, 10000),
         ];
     }
 }

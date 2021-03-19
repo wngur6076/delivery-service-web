@@ -15,10 +15,11 @@ class CreateOptionGroupsTable extends Migration
     {
         Schema::create('option_groups', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('eatery_id');
             $table->string('name');
-            $table->boolean('required');
-            $table->integer('min');
-            $table->integer('max');
+            $table->boolean('required')->nullable();
+            $table->integer('min')->nullable();
+            $table->integer('max')->nullable();
             $table->timestamps();
         });
     }

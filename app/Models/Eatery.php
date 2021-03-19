@@ -24,7 +24,7 @@ class Eatery extends Model
 
     public function signatureMenus()
     {
-        return $this->belongsToMany(Menu::class, 'signature_menus');
+        return $this->belongsToMany(Menu::class, 'signature_menus')->withTimestamps();
     }
 
     public function getDeliveryChargeInWonsAttribute()

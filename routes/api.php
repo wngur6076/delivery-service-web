@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EateriesController;
-use App\Http\Controllers\EateriesMenusController;
+use App\Http\Controllers\MenusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +18,4 @@ use App\Http\Controllers\EateriesMenusController;
 
 Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 
-Route::get('/eateries/{eatery}/menus/{menu}', [EateriesMenusController::class, 'show']);
+Route::get('/menus/{menu}', [MenusController::class, 'show']);

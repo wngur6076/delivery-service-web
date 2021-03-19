@@ -12,6 +12,7 @@ use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 
 class ShowMenuTest extends TestCase
 {
@@ -23,8 +24,15 @@ class ShowMenuTest extends TestCase
         $this->withoutExceptionHandling();
         Storage::fake('public');
 
-        $eatery = Eatery::factory()->create();
-        $menuGroup = MenuGroup::factory()->create(['eatery_id' => $eatery->id, 'name' => '분식메뉴']);
+        // $eatery = Eatery::factory()->create();
+        // $menuGroup = MenuGroup::factory()->create(['eatery_id' => $eatery->id]);
+
+        $eatery = Mockery::mock(Eatery::class);
+        $eatery->shouldReceive('getAttribute')->with('id')->andReturn(1);
+
+        $menuGroup = Mockery::mock(MenuGroup::class);
+        $menuGroup->shouldReceive('getAttribute')->with('id')->andReturn(1);
+
         $menu = Menu::factory()->create([
             'menu_group_id' => $menuGroup->id,
             'name' => '블랙 피넛 커피',
@@ -34,6 +42,7 @@ class ShowMenuTest extends TestCase
         ]);
 
         $optionGroup1 = OptionGroup::factory()->create([
+            'eatery_id' => $eatery->id,
             'name' => '맛 선택',
             'required' => true,
             'min' => 1,
@@ -56,6 +65,7 @@ class ShowMenuTest extends TestCase
         ]);
 
         $optionGroup2 = OptionGroup::factory()->create([
+            'eatery_id' => $eatery->id,
             'name' => '추가 선택',
             'required' => false,
             'min' => 0,
@@ -75,7 +85,7 @@ class ShowMenuTest extends TestCase
 
         $menu->optionGroups()->attach([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->json('GET',"api/eateries/{$eatery->id}/menus/{$menu->id}");
+        $response = $this->json('GET',"api/menus/{$menu->id}");
 
         $response->assertStatus(200);
         $response->assertJson([

@@ -21,20 +21,8 @@ class OptionGroupFactory extends Factory
      */
     public function definition()
     {
-        $required = $this->faker->randomElement([false, true]);
-
         return [
-            'name' => "{$this->faker->companySuffix} {$this->faker->regexify('[A-Z0-9]')}",
-            'required' => $required,
-
+            'name' => "{$this->faker->companySuffix} {$this->faker->regexify('[A-Z0-9]')} 선택",
         ];
     }
 }
-
-/* $table->unsignedBigInteger('menu_id')->nullable();
-$table->string('name');
-$table->boolean('required');
-$table->integer('min');
-$table->integer('max');
-$table->integer('option_count');
- */

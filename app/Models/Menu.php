@@ -12,7 +12,7 @@ class Menu extends Model
 
     public function optionGroups()
     {
-        return $this->belongsToMany(OptionGroup::class);
+        return $this->belongsToMany(OptionGroup::class)->withTimestamps();
     }
 
     public function getImageUrlAttribute()
