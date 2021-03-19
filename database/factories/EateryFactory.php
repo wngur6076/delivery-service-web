@@ -22,8 +22,9 @@ class EateryFactory extends Factory
     public function definition()
     {
         $deliveryTimeStart = $this->faker->numberBetween(10, 40);
+
         return [
-            'title' => "{$this->faker->word} {$this->faker->city} {$this->faker->randomDigit}",
+            'title' => "{$this->faker->word} {$this->faker->city} {$this->faker->regexify('[A-Z0-9]')}",
             'poster_image_path' => 'posters/test.jpeg',
             'delivery_time' => "{$deliveryTimeStart}~{$this->faker->numberBetween($deliveryTimeStart+10, $deliveryTimeStart+40)}",
             'delivery_charge' => $this->faker->randomNumber(4),

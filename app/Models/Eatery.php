@@ -27,11 +27,6 @@ class Eatery extends Model
         return $this->belongsToMany(Menu::class, 'signature_menus');
     }
 
-    public function menuCategories()
-    {
-        return $this->hasMany(Category::class);
-    }
-
     public function getDeliveryChargeInWonsAttribute()
     {
         return number_format($this->delivery_charge);
@@ -50,13 +45,6 @@ class Eatery extends Model
     public function gradeAverage()
     {
         return number_format(Review::where('eatery_title', $this->title)->pluck('grade')->average(), 1);
-    }
-
-    public function addCategories($categories)
-    {
-        $this->menuCategories()->createMany($categories);
-
-        return $this;
     }
 
 }
