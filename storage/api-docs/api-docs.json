@@ -11,6 +11,10 @@
         {
             "url": "http://localhost:8000/api",
             "description": "테스트 서버"
+        },
+        {
+            "url": "https://delivery-service-web.herokuapp.com/api",
+            "description": "실 서버"
         }
     ],
     "paths": {
