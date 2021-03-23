@@ -22,7 +22,7 @@ class OptionFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->city,
+            'name' => "{$this->faker->city} {$this->faker->regexify('[A-Z0-9]')}",
             'price' => $this->faker->numberBetween(0, 10000),
         ];
     }

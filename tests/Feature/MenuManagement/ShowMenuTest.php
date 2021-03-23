@@ -25,13 +25,13 @@ class ShowMenuTest extends TestCase
         Storage::fake('public');
 
         // $eatery = Eatery::factory()->create();
-        // $menuGroup = MenuGroup::factory()->create(['eatery_id' => $eatery->id]);
+        // $menuGroup = Mockery::mock(MenuGroup::class);
+        // $menuGroup->shouldReceive('getAttribute')->with('id')->andReturn(1);
 
         $eatery = Mockery::mock(Eatery::class);
         $eatery->shouldReceive('getAttribute')->with('id')->andReturn(1);
 
-        $menuGroup = Mockery::mock(MenuGroup::class);
-        $menuGroup->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $menuGroup = MenuGroup::factory()->create(['eatery_id' => $eatery->id]);
 
         $menu = Menu::factory()->create([
             'menu_group_id' => $menuGroup->id,
@@ -85,7 +85,7 @@ class ShowMenuTest extends TestCase
 
         $menu->optionGroups()->attach([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->json('GET',"api/menus/{$menu->id}");
+        $response = $this->json('GET',"api/menugroups/{$menuGroup->id}/menus/{$menu->id}");
 
         $response->assertStatus(200);
         $response->assertJson([

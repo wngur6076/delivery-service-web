@@ -18,4 +18,4 @@ use App\Http\Controllers\MenusController;
 
 Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 
-Route::get('/menus/{menu}', [MenusController::class, 'show']);
+Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 'show']);

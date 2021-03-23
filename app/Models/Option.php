@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Option extends Model
 {
     use HasFactory;
+
+    public function getPriceInWonsAttribute()
+    {
+        return number_format($this->price);
+    }
 }

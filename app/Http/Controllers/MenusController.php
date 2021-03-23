@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Menu;
+use App\Http\Resources\MenuDetailsResource;
+use App\Models\MenuGroup;
 use Illuminate\Http\Request;
-use App\Http\Resources\OptionGroupResource;
 
 class MenusController extends Controller
 {
@@ -38,18 +38,13 @@ class MenusController extends Controller
      *
      * Returns list of projects
      */
-    public function show(Menu $menu)
+    public function show($menugroupId, $menuId)
     {
+        $menu = MenuGroup::find($menugroupId)->menus()->findOrFail($menuId);
+
         return response()->json([
             'status' => 'success',
-            'data' => [
-                'id' => $menu->id,
-                'name' => $menu->name,
-                'price' => number_format($menu->price),
-                'description' => $menu->description,
-                'image' => $menu->image_url,
-                'option_groups' => OptionGroupResource::collection($menu->optionGroups),
-            ],
+            'data' => new MenuDetailsResource($menu),
         ], 200);
     }
 }

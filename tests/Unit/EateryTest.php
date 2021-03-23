@@ -23,7 +23,6 @@ class EateryTest extends TestCase
             'poster_image_path' => 'posters/test.png'
         ]);
 
-        dd($eatery->poster_image_url);
         $this->assertEquals('/storage/posters/test.png', $eatery->poster_image_url);
     }
 
