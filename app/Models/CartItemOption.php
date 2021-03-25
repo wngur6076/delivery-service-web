@@ -9,6 +9,10 @@ class CartItemOption extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'option_id' => 'integer',
+    ];
+
     protected $guarded = [];
 
     public function option()

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\CartItemOption;
-use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +9,7 @@ class CartController extends Controller
 {
     public function store()
     {
-        $cart = Auth::user()->cart()->create();
+        $cart = Auth::user()->getCart();
 
         $cartItem = $cart->items()->create(['menu_id' => request('menu_id'), 'quantity' => request('quantity')]);
 

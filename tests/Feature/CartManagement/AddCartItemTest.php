@@ -11,6 +11,7 @@ use App\Models\Eatery;
 use App\Models\Option;
 use App\Models\MenuGroup;
 use App\Models\OptionGroup;
+use App\Http\Resources\MenuDetailsResource;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -19,7 +20,7 @@ class AddCartItemTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function adding_a_valid_item()
+    function adding_a_valid_item()
     {
         $this->withoutExceptionHandling();
 
@@ -75,6 +76,8 @@ class AddCartItemTest extends TestCase
             'price' => 1000,
         ]);
 
+        $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
+
         $response = $this->actingAs($user)->json('POST', '/api/cart', [
             'menu_id' => $menu->id,
             'quantity' => 2,
@@ -87,6 +90,8 @@ class AddCartItemTest extends TestCase
             $this->assertTrue($cart->user->is($user));
 
             tap($cart->items()->first(), function ($item) {
+                $this->assertEquals(2, $item->quantity);
+
                 $menu = $item->menu()->first();
                 $this->assertEquals('블랙 피넛 커피', $menu->name);
                 $this->assertEquals(4800, $menu->price);
