@@ -19,7 +19,7 @@ class ShowMenuTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_view_their_menu()
+    public function guest_can_view_their_menu()
     {
         $this->withoutExceptionHandling();
         Storage::fake('public');
@@ -71,7 +71,6 @@ class ShowMenuTest extends TestCase
             'min' => 0,
             'max' => 2,
         ]);
-
         Option::factory()->create([
             'option_group_id' => $optionGroup2->id,
             'name' => '스콘',
@@ -83,7 +82,7 @@ class ShowMenuTest extends TestCase
             'price' => 1500,
         ]);
 
-        $menu->optionGroups()->attach([$optionGroup1->id, $optionGroup2->id]);
+        $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
 
         $response = $this->json('GET',"api/menugroups/{$menuGroup->id}/menus/{$menu->id}");
 

@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
                 // 메뉴그룹 각각에 메뉴 2~6개 랜덤으로 생성
                 Menu::factory(rand(2, 6))->create(['menu_group_id' => $menuGroup->id])->each(function ($menu) use ($optionGroups) {
                     // 옵션그룹중에서 랜덤으로 몇개 가져와서 메뉴와 연결한다.
-                    $menu->optionGroups()->attach($this->faker->randomElements(
+                    $menu->optionGroups()->sync($this->faker->randomElements(
                         $optionGroups->pluck('id')->toArray(),
                         rand(0, $optionGroups->count())
                     ));

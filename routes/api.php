@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EateriesController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\MenusController;
+use App\Http\Controllers\EateriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ use App\Http\Controllers\MenusController;
 Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 
 Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 'show']);
+
+Route::post('/cart', [CartController::class, 'store']);

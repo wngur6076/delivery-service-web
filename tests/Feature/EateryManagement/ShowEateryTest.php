@@ -17,7 +17,7 @@ class ShowEateryTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function user_can_view_a_single_eatery_with_recommended_menus()
+    function guest_can_view_a_single_eatery_with_recommended_menus()
     {
         $this->withoutExceptionHandling();
         Storage::fake('public');
@@ -107,7 +107,7 @@ class ShowEateryTest extends TestCase
     }
 
     /** @test */
-    function user_can_view_a_single_eatery_with_no_recommended_menus()
+    function guest_can_view_a_single_eatery_with_no_recommended_menus()
     {
         $this->withoutExceptionHandling();
         Storage::fake('public');
