@@ -93,7 +93,7 @@ class AddCartItemTest extends TestCase
                 $this->assertEquals('피넛을 넣은 커피', $menu->description);
                 $this->assertEquals('menus/test.jpeg', $menu->image_path);
 
-                $this->assertCount(3, $item->options()->count());
+                $this->assertCount(3, $item->options);
                 tap($item->options()->find(1), function ($item_option) {
                     $option = $item_option->option()->first();
                     $this->assertEquals('순한맛', $option->name);
