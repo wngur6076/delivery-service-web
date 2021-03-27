@@ -17,8 +17,8 @@ class OptionGroup extends Model
 
     public function optionCountValidation($optionIds = [])
     {
-        $optionCount = Option::whereIn('id', $optionIds)->where('option_group_id', $this->id)->count();
-        if ($this->min > $optionCount || $this->max < $optionCount) {
+        $selectOptionCount = Option::whereIn('id', $optionIds)->where('option_group_id', $this->id)->count();
+        if ($this->min > $selectOptionCount || $this->max < $selectOptionCount) {
             throw new OptionCountException;
         }
     }
