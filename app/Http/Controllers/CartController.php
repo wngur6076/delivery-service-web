@@ -4,21 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exceptions\EaterySyncException;
 
 class CartController extends Controller
 {
-    public function store()
+    public function store($eateryId)
     {
-        $cart = Auth::user()->getCart();
-
-        $cartItem = $cart->items()->create(['menu_id' => request('menu_id'), 'quantity' => request('quantity')]);
-
-        foreach (request('option_ids') as $option_id) {
-            $cartItem->options()->create(['option_id' => $option_id]);
+        try {
+            $cart = Auth::user()->getCart($eateryId);
+            $cart->addItem(request('menu_id'), request('quantity'), request('option_ids'));
+            return response()->json([], 200);
+        } catch (EaterySyncException $e) {
+            return response()->json([], 422);
         }
-        // dd($cartItem->options()->find(2)->option->toArray());
-        // dd($cart->items()->first()->menu()->first());
-
-        return response()->json([], 200);
     }
 }

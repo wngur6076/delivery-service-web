@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
+use App\Exceptions\EaterySyncException;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -47,8 +46,18 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
-    public function getCart()
+    public function getCart($eateryId)
     {
-        return $this->cart ?: $this->cart()->create();
+        if (isset($this->cart)) {
+            if ($this->cart->eatery_id != $eateryId) {
+                throw new EaterySyncException;
+            } else {
+                $cart = $this->cart;
+            }
+        } else {
+            $cart = $this->cart()->create(['eatery_id' => $eateryId]);
+        }
+
+        return $cart;
     }
 }

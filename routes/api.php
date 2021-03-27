@@ -21,4 +21,6 @@ Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 
 Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 'show']);
 
-Route::post('/cart', [CartController::class, 'store']);
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('/eateries/{eateryId}/cart', [CartController::class, 'store']);
+});
