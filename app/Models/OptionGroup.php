@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\OptionCountException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OptionGroup extends Model
 {
@@ -12,5 +13,13 @@ class OptionGroup extends Model
     public function options()
     {
         return $this->hasMany(Option::class);
+    }
+
+    public function optionCountValidation($optionIds = [])
+    {
+        $optionCount = Option::whereIn('id', $optionIds)->where('option_group_id', $this->id)->count();
+        if ($this->min > $optionCount || $this->max < $optionCount) {
+            throw new OptionCountException;
+        }
     }
 }
