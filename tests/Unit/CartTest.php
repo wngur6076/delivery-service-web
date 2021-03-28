@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Cart;
 use Mockery;
 use Tests\TestCase;
 use App\Models\Menu;
@@ -140,5 +141,54 @@ class CartTest extends TestCase
         $this->assertCount(3, $cart->fresh()->items);
         $this->assertCount(1, $cart->items()->find(3)->options);
         $this->assertEquals(5, $cart->items()->find(3)->quantity);
+    }
+
+    /** @test */
+    function get_total_price_of_a_cart_items()
+    {
+        $user = User::factory()->create();
+        $cart = $user->getCart($this->getMockEatery()->id);
+        $cart->items = collect([
+            (object) [
+                'quantity' => 1,
+                'menu' => (object) ['price' => 15000],
+                'options' => collect([
+                    (object) [
+                        'option' => (object) ['price' => 1200],
+                    ],
+                ]),
+            ],
+            (object) [
+                'quantity' => 2,
+                'menu' => (object) ['price' => 7000],
+                'options' => collect([
+                    (object) [
+                        'option' => (object) ['price' => 1000],
+                    ],
+                    (object) [
+                        'option' => (object) ['price' => 3000],
+                    ],
+                ]),
+            ],
+            (object) [
+                'quantity' => 3,
+                'menu' => (object) ['price' => 22000],
+                'options' => collect([
+                    (object) [
+                        'option' => (object) ['price' => 500],
+                    ],
+                    (object) [
+                        'option' => (object) ['price' => 1500],
+                    ],
+                ]),
+            ],
+        ]);
+
+        $itemsPrice = $cart->getItemsPrice();
+
+        $this->assertEquals(16200, $itemsPrice[0]);
+        $this->assertEquals(18000, $itemsPrice[1]);
+        $this->assertEquals(68000, $itemsPrice[2]);
+        $this->assertEquals(102200, $itemsPrice->sum());
     }
 }

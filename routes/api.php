@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\EateriesController;
+use App\Http\Controllers\CartBannerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,6 @@ Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 'show']);
 
 Route::group(['middleware' => 'auth:api'], function() {
-    Route::post('/eateries/{eateryId}/cart', [CartController::class, 'store']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::get('/cart/banner', CartBannerController::class);
 });

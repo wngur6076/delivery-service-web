@@ -38,4 +38,14 @@ class Cart extends Model
             }
         }
     }
+
+    public function getItemsPrice()
+    {
+        return $this->items->map(function ($cartItem) {
+            $optionsPrice = $cartItem->options->map(function ($cartOption) {
+                return $cartOption->option->price;
+            });
+            return $cartItem->menu->price * $cartItem->quantity + $optionsPrice->sum();
+        });
+    }
 }

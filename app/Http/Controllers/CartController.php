@@ -10,18 +10,19 @@ use App\Models\Menu;
 
 class CartController extends Controller
 {
-    public function store($eateryId)
+    public function store()
     {
         $this->validateRequest();
         $optionIds = request('option_ids') ?: [];
+        $menu = Menu::findOrFail(request('menu_id'));
 
         try {
-            $optionGroups = Menu::findOrFail(request('menu_id'))->optionGroups;
+            $optionGroups = $menu->optionGroups;
             foreach ($optionGroups as $optionGroup) {
                 $optionGroup->optionCountValidation($optionIds);
             }
 
-            $cart = Auth::user()->getCart($eateryId);
+            $cart = Auth::user()->getCart($menu->menuGroup->eatery_id);
             $cart->addItem(request('menu_id'), request('quantity'), $optionIds);
 
             return response()->json([

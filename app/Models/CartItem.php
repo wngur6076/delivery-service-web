@@ -18,6 +18,6 @@ class CartItem extends Model
 
     public function options()
     {
-        return $this->hasMany(CartItemOption::class);
+        return $this->hasMany(CartItemOption::class)->with('option');
     }
 }
