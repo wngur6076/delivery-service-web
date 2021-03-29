@@ -14,7 +14,7 @@ use App\Models\OptionGroup;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AddCartTest extends TestCase
+class StoreCartItemTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -35,13 +35,12 @@ class AddCartTest extends TestCase
     }
 
     /** @test */
-    function guests_cannot_add_new_cart_item()
+    function guest_cannot_add_new_cart_item()
     {
-        $eatery = Eatery::factory()->create();
         $menu = Mockery::mock(Menu::class);
         $menu->shouldReceive('getAttribute')->with('id')->andReturn(1);
 
-        $response = $this->json('POST', '/api/cart', [
+        $response = $this->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
         ]);
@@ -110,7 +109,7 @@ class AddCartTest extends TestCase
 
         $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
             'option_ids' => [$option1->id, $option3->id, $option4->id],
@@ -200,7 +199,7 @@ class AddCartTest extends TestCase
         $menu1->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
         $menu2->optionGroups()->sync([$optionGroup1->id]);
 
-        $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu1->id,
             'quantity' => 2,
             'option_ids' => [$option1->id, $option3->id, $option4->id],
@@ -210,7 +209,7 @@ class AddCartTest extends TestCase
             $this->assertEquals(2, $cart->items->find(1)->quantity);
         });
 
-        $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart', [
+        $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu1->id,
             'quantity' => 8,
             'option_ids' => [$option1->id, $option3->id, $option4->id],
@@ -220,7 +219,7 @@ class AddCartTest extends TestCase
             $this->assertEquals(10, $cart->items->find(1)->quantity);
         });
 
-        $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart', [
+        $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu2->id,
             'quantity' => 3,
             'option_ids' => [$option2->id],
@@ -264,12 +263,12 @@ class AddCartTest extends TestCase
             'max' => 5,
         ]);
 
-        $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 3,
         ]);
 
-        $response = $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user->fresh(), 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $otherMenu->id,
             'quantity' => 3,
         ]);
@@ -333,14 +332,14 @@ class AddCartTest extends TestCase
 
         $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
         ]);
         $response->assertStatus(422);
         $response->assertJson(['status' => 'option_count_validation_failure']);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
             'option_ids' => [$option1_1->id],
@@ -348,7 +347,7 @@ class AddCartTest extends TestCase
         $response->assertStatus(422);
         $response->assertJson(['status' => 'option_count_validation_failure']);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
             'option_ids' => [$option1_1->id, $option1_2->id, $option1_3->id, $option1_4->id],
@@ -356,7 +355,7 @@ class AddCartTest extends TestCase
         $response->assertStatus(422);
         $response->assertJson(['status' => 'option_count_validation_failure']);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
             'option_ids' => [$option1_1->id, $option1_2->id, $option2_1->id, $option2_2->id, $option2_3->id],
@@ -371,7 +370,7 @@ class AddCartTest extends TestCase
         $user = User::factory()->create();
         $eatery = Eatery::factory()->create();
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', $this->validParams([
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', $this->validParams([
             'menu_id' => '',
         ]));
 
@@ -384,7 +383,7 @@ class AddCartTest extends TestCase
         $user = User::factory()->create();
         $eatery = Eatery::factory()->create();
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', $this->validParams([
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', $this->validParams([
             'quantity' => '',
         ]));
 
@@ -397,7 +396,7 @@ class AddCartTest extends TestCase
         $user = User::factory()->create();
         $eatery = Eatery::factory()->create();
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', $this->validParams([
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', $this->validParams([
             'quantity' => 'not a price',
         ]));
 
@@ -442,7 +441,7 @@ class AddCartTest extends TestCase
 
         $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart', [
+        $response = $this->actingAs($user, 'api')->json('POST', '/api/cart-items', [
             'menu_id' => $menu->id,
             'quantity' => 2,
             'option_ids' => null,

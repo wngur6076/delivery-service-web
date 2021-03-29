@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CartBannerController extends Controller
 {
-    public function __invoke()
+    public function show()
     {
         $cart = Auth::user()->cart;
 

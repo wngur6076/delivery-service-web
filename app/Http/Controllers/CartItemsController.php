@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\EaterySyncException;
 use App\Exceptions\OptionCountException;
-use App\Models\Menu;
+use App\Http\Resources\CartItemResource;
+use App\Models\CartItem;
 
-class CartController extends Controller
+class CartItemsController extends Controller
 {
     public function store()
     {
@@ -42,6 +44,17 @@ class CartController extends Controller
                 'error' => '422',
             ], 422);
         }
+    }
+
+    public function update(CartItem $cartItem)
+    {
+        $cartItem->update(['quantity' => request('quantity')]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => '카트 아이템 수량변경 성공했어요.',
+            'data' => new CartItemResource($cartItem),
+        ], 200);
     }
 
     private function validateRequest()

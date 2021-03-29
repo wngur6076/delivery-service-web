@@ -18,7 +18,15 @@ class ShowCartBannerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_see_the_cart_banner()
+    function guest_cannot_see_the_cart_banner()
+    {
+        $response = $this->json('GET', '/api/cart-banner');
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
+    function user_can_see_the_cart_banner()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
@@ -61,7 +69,7 @@ class ShowCartBannerTest extends TestCase
         $cart->addItem($menu1->id, 2, [$option1->id, $option2->id]);
         $cart->addItem($menu2->id, 3, [$option1->id, $option2->id, $option3->id]);
 
-        $response = $this->actingAs($user->fresh(), 'api')->json('GET', '/api/cart/banner');
+        $response = $this->actingAs($user->fresh(), 'api')->json('GET', '/api/cart-banner');
         $response->assertStatus(200);
         $response->assertJson([
             'data' => [
