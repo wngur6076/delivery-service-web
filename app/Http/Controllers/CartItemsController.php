@@ -66,4 +66,15 @@ class CartItemsController extends Controller
             'data' => new CartItemResource($cartItem),
         ], 200);
     }
+
+    public function destroy($id)
+    {
+        $cartItem = Auth::user()->cart->items()->findOrFail($id);
+        $cartItem->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => '카트 아이템 수량변경 성공했어요.',
+        ], 204);
+    }
 }

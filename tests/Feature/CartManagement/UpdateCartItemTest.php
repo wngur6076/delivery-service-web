@@ -44,7 +44,7 @@ class UpdateCartItemTest extends TestCase
     }
 
     /** @test */
-    function guest_cannot_update_the_quantity_of_cart_items()
+    function guest_cannot_update_cart_items()
     {
         $cartItem = CartItem::factory()->create($this->oldAttributes([
             'quantity' => 2,
@@ -60,7 +60,7 @@ class UpdateCartItemTest extends TestCase
     }
 
     /** @test */
-    function user_can_update_the_quantity_of_cart_items()
+    function user_can_update_their_own_cart_items()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
