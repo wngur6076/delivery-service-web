@@ -46,18 +46,8 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
-    public function getCart($eateryId)
+    public function getCart()
     {
-        if (isset($this->cart)) {
-            if ($this->cart->eatery_id != $eateryId) {
-                throw new EaterySyncException;
-            } else {
-                $cart = $this->cart;
-            }
-        } else {
-            $cart = $this->cart()->create(['eatery_id' => $eateryId]);
-        }
-
-        return $cart;
+        return isset($this->cart) ? $this->cart : $this->cart()->create();
     }
 }

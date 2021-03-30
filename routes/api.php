@@ -24,6 +24,6 @@ Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/cart-items', [CartItemsController::class, 'store']);
-    Route::patch('/cart-items/{cartItem}', [CartItemsController::class, 'update']);
+    Route::patch('/cart-items/{id}', [CartItemsController::class, 'update']);
     Route::get('/cart-banner', [CartBannerController::class, 'show']);
 });

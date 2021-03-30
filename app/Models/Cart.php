@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Exceptions\EaterySyncException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
@@ -47,5 +48,14 @@ class Cart extends Model
             });
             return $cartItem->menu->price * $cartItem->quantity + $optionsPrice->sum();
         });
+    }
+
+    public function eaterySync($eateryId)
+    {
+        if (! isset($this->eatery_id)) {
+            $this->update(['eatery_id' => $eateryId]);
+        } else if ($this->eatery_id != $eateryId) {
+            throw new EaterySyncException;
+        }
     }
 }

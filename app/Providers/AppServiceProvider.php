@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
             \URL::forceScheme('https');
         }
 
-        if (DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
+        /* if (DB::connection() instanceof \Illuminate\Database\SQLiteConnection) {
             DB::statement(DB::raw('PRAGMA foreign_keys=1'));
-        }
+        } */
     }
 }

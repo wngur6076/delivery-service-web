@@ -2,15 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Models\Cart;
 use Mockery;
 use Tests\TestCase;
 use App\Models\Menu;
+use App\Models\User;
 use App\Models\Eatery;
 use App\Models\Option;
 use App\Models\MenuGroup;
 use App\Models\OptionGroup;
-use App\Models\User;
+use App\Exceptions\EaterySyncException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -38,7 +38,7 @@ class CartTest extends TestCase
     function can_add_item()
     {
         $user = User::factory()->create();
-        $cart = $user->getCart($this->getMockEatery()->id);
+        $cart = $user->getCart();
 
         $menu = Menu::factory()->create(['menu_group_id' => $this->getMockMenuGroup()->id]);
         $optionGroup = Mockery::mock(OptionGroup::class);
@@ -54,10 +54,29 @@ class CartTest extends TestCase
     }
 
     /** @test */
+    function exception_is_thrown_when_adding_another_eatery_menu_to_the_cart()
+    {
+        $user = User::factory()->create();
+        $eatery1 = Eatery::factory()->create();
+        $eatery2 = Eatery::factory()->create();
+
+        $cart = $user->getCart();
+        $cart->eaterySync($eatery1->id);
+        try {
+            $cart->eaterySync($eatery2->id);
+        } catch (EaterySyncException $e) {
+            $this->assertEquals($eatery1->id, $cart->eatery_id);
+            return;
+        }
+
+        $this->fail("I added another eatery menu and it success.");
+    }
+
+    /** @test */
     function only_the_quantity_is_updated_if_the_item_already_exists()
     {
         $user = User::factory()->create();
-        $cart = $user->getCart($this->getMockEatery()->id);
+        $cart = $user->getCart();
 
         $menu = Menu::factory()->create(['menu_group_id' => $this->getMockMenuGroup()->id]);
         $optionGroup = Mockery::mock(OptionGroup::class);
@@ -147,7 +166,7 @@ class CartTest extends TestCase
     function get_total_price_of_a_cart_items()
     {
         $user = User::factory()->create();
-        $cart = $user->getCart($this->getMockEatery()->id);
+        $cart = $user->getCart();
         $cart->items = collect([
             (object) [
                 'quantity' => 1,

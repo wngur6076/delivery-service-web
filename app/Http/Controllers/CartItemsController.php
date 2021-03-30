@@ -8,13 +8,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Exceptions\EaterySyncException;
 use App\Exceptions\OptionCountException;
 use App\Http\Resources\CartItemResource;
-use App\Models\CartItem;
 
 class CartItemsController extends Controller
 {
     public function store()
     {
-        $this->validateRequest();
+        $this->validate(request(), [
+            'menu_id' => ['required'],
+            'quantity' => ['required', 'numeric'],
+            'option_ids' => ['nullable'],
+        ]);
+
         $optionIds = request('option_ids') ?: [];
         $menu = Menu::findOrFail(request('menu_id'));
 
@@ -24,7 +28,8 @@ class CartItemsController extends Controller
                 $optionGroup->optionCountValidation($optionIds);
             }
 
-            $cart = Auth::user()->getCart($menu->menuGroup->eatery_id);
+            $cart = Auth::user()->getCart();
+            $cart->eaterySync($menu->menuGroup->eatery_id);
             $cart->addItem(request('menu_id'), request('quantity'), $optionIds);
 
             return response()->json([
@@ -46,8 +51,13 @@ class CartItemsController extends Controller
         }
     }
 
-    public function update(CartItem $cartItem)
+    public function update($id)
     {
+        $this->validate(request(), [
+            'quantity' => ['required', 'numeric'],
+        ]);
+
+        $cartItem = Auth::user()->cart->items()->findOrFail($id);
         $cartItem->update(['quantity' => request('quantity')]);
 
         return response()->json([
@@ -55,14 +65,5 @@ class CartItemsController extends Controller
             'message' => '카트 아이템 수량변경 성공했어요.',
             'data' => new CartItemResource($cartItem),
         ], 200);
-    }
-
-    private function validateRequest()
-    {
-        $this->validate(request(), [
-            'menu_id' => ['required'],
-            'quantity' => ['required', 'numeric'],
-            'option_ids' => ['nullable'],
-        ]);
     }
 }
