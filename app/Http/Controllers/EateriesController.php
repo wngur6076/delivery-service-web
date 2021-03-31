@@ -12,7 +12,7 @@ class EateriesController extends Controller
      * @OA\Get(
      *      path="/eateries/{id}",
      *      operationId="getEateryById",
-     *      tags={"음식점 관련"},
+     *      tags={"음식점"},
      *      summary="특정 음식점 가져오기",
      *      description="특정 음식점 아이템을 가져온다.",
      *     @OA\Parameter(

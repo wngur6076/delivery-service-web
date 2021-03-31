@@ -41,8 +41,8 @@ Route::prefix('auth')->group(function () {
         Route::post('/login', [LoginController::class, 'store'])->name('login.store');
     });
     Route::group(['middleware' => 'auth:api'], function () {
-        Route::delete('/login', [LoginController::class, 'destroy'])->name('login.destroy');
+        Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
         Route::get('/user', [LoginController::class, 'show'])->name('login.show');
-        Route::get('/refresh', [RefreshController::class, 'store'])->name('refresh.store');
+        Route::post('/refresh', [RefreshController::class, 'store'])->name('refresh.store');
     });
 });

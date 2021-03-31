@@ -12,7 +12,7 @@ class MenusController extends Controller
      * @OA\Get(
      *      path="/menus/{id}",
      *      operationId="getMenuById",
-     *      tags={"메뉴 관련"},
+     *      tags={"메뉴"},
      *      summary="특정 메뉴 가져오기",
      *      description="특정 메뉴 아이템을 가져온다.",
      *     @OA\Parameter(

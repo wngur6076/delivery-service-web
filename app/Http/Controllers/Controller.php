@@ -18,6 +18,14 @@ use Illuminate\Routing\Controller as BaseController;
  */
 
 /**
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      type="http",
+ *      scheme="bearer"
+ * )
+ **/
+
+/**
  *  @OA\Server(
  *      url=L5_SWAGGER_CONST_TEST_HOST,
  *      description="테스트 서버"

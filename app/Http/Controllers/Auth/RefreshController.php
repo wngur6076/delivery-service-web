@@ -7,6 +7,26 @@ use Illuminate\Http\Request;
 
 class RefreshController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/auth/refresh",
+     *      tags={"Authorization"},
+     *      summary="토큰 재발급 하기",
+
+     *      @OA\Response(
+     *          response=200,
+     *          description="토큰 재발급 성공",
+     *       ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="refresh_token_error"
+     *      ),
+     *       security={
+     *           {"bearerAuth": {}}
+     *       }
+     *     )
+     *
+     */
     public function store()
     {
         if (! $token = auth()->guard()->refresh()) {
