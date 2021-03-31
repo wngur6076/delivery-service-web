@@ -46,11 +46,13 @@ class UpdateCartItemTest extends TestCase
     /** @test */
     function guest_cannot_update_cart_items()
     {
+        $user = User::factory()->create();
+
         $cartItem = CartItem::factory()->create($this->oldAttributes([
             'quantity' => 2,
         ]));
 
-        $response = $this->json('PATCH', "/api/cart-items/{$cartItem->id}", [
+        $response = $this->json('PATCH', "/api/user-cart/{$user->id}/cart-items/{$cartItem->id}", [
             'quantity' => 10,
         ]);
 
@@ -82,7 +84,7 @@ class UpdateCartItemTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/cart-items/{$cartItem->id}", [
+        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/user-cart/{$user->id}/cart-items/{$cartItem->id}", [
             'quantity' => 10,
         ]);
 
@@ -125,11 +127,11 @@ class UpdateCartItemTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $response = $this->actingAs($otherUser, 'api')->json('PATCH', "/api/cart-items/{$cartItem->id}", [
+        $response = $this->actingAs($otherUser, 'api')->json('PATCH', "/api/user-cart/{$user->id}/cart-items/{$cartItem->id}", [
             'quantity' => 10,
         ]);
 
-        $response->assertStatus(404);
+        $response->assertStatus(401);
         tap($cartItem->fresh(), function ($cartItem) {
             $this->assertEquals(2, $cartItem->quantity);
         });
@@ -144,7 +146,7 @@ class UpdateCartItemTest extends TestCase
             'quantity' => 2,
         ]));
 
-        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/cart-items/{$cartItem->id}", [
+        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/user-cart/{$user->id}/cart-items/{$cartItem->id}", [
             'quantity' => '',
         ]);
 
@@ -160,7 +162,7 @@ class UpdateCartItemTest extends TestCase
             'quantity' => 2,
         ]));
 
-        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/cart-items/{$cartItem->id}", [
+        $response = $this->actingAs($user, 'api')->json('PATCH', "/api/user-cart/{$user->id}/cart-items/{$cartItem->id}", [
             'quantity' => 'not a quantity',
         ]);
 

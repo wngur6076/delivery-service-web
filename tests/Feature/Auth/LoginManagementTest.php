@@ -83,10 +83,10 @@ class LoginManagementTest extends TestCase
             ->getJson(route('login.show'));
 
         $response->assertStatus(200)
-        ->assertJson([
-            'status' => 'success',
-            'data' => true,
-        ]);
+            ->assertJson([
+                'status' => 'success',
+                'data' => true,
+            ]);
     }
 
     /** @test */
