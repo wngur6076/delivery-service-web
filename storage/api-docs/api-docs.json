@@ -184,17 +184,17 @@
                 ]
             }
         },
-        "/eateries/{id}": {
+        "/eateries/{eatery_id}": {
             "get": {
                 "tags": [
                     "음식점"
                 ],
                 "summary": "특정 음식점 가져오기",
                 "description": "특정 음식점 아이템을 가져온다.",
-                "operationId": "getEateryById",
+                "operationId": "App\\Http\\Controllers\\EateriesController::show",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "eatery_id",
                         "in": "path",
                         "description": "eatery_id(1~50 test-case 있음)",
                         "required": true,
@@ -218,19 +218,19 @@
                 ]
             }
         },
-        "/menus/{id}": {
+        "/menus/{menu_id}": {
             "get": {
                 "tags": [
                     "메뉴"
                 ],
                 "summary": "특정 메뉴 가져오기",
                 "description": "특정 메뉴 아이템을 가져온다.",
-                "operationId": "getMenuById",
+                "operationId": "App\\Http\\Controllers\\MenusController::show",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "menu_id",
                         "in": "path",
-                        "description": "menu_id(메뉴아이디 적어주세요.)",
+                        "description": "menu_id",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -248,6 +248,228 @@
                 "security": [
                     {
                         "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/user-cart/{user_id}/banner": {
+            "get": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 배너 보기",
+                "operationId": "App\\Http\\Controllers\\UserCartBannerController::show",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user-cart/{user_id}/cart-items": {
+            "post": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 아이템 담기",
+                "operationId": "App\\Http\\Controllers\\UserCartCartItemsController::store",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "menu_id",
+                        "in": "query",
+                        "description": "menu_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "query",
+                        "description": "수량",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "option_ids[]",
+                        "in": "query",
+                        "description": "옵션ids",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    },
+                    "422": {
+                        "description": "option_count_validation_failure, eatery_sync_failure"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user-cart/{user_id}/cart-items/{cart_item_id}": {
+            "delete": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 아이템 삭제",
+                "operationId": "App\\Http\\Controllers\\UserCartCartItemsController::destroy",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "cart_item_id",
+                        "in": "path",
+                        "description": "cart_item_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 아이템 업데이트",
+                "operationId": "App\\Http\\Controllers\\UserCartCartItemsController::update",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "cart_item_id",
+                        "in": "path",
+                        "description": "cart_item_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "query",
+                        "description": "수량",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user-carts/{user_id}": {
+            "delete": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 삭제",
+                "operationId": "App\\Http\\Controllers\\UserCartsController::destroy",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             }

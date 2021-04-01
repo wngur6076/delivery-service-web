@@ -84,7 +84,7 @@ class ShowMenuTest extends TestCase
 
         $menu->optionGroups()->sync([$optionGroup1->id, $optionGroup2->id]);
 
-        $response = $this->json('GET',"api/menugroups/{$menuGroup->id}/menus/{$menu->id}");
+        $response = $this->json('GET',"api/menus/{$menu->id}");
 
         $response->assertStatus(200);
         $response->assertJson([

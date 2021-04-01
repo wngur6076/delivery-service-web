@@ -12,6 +12,66 @@ use App\Http\Resources\CartItemResource;
 
 class UserCartCartItemsController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/user-cart/{user_id}/cart-items",
+     *      tags={"카트"},
+     *      summary="카트 아이템 담기",
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          description="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="menu_id",
+     *          description="menu_id",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="quantity",
+     *          description="수량",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="option_ids[]",
+     *          description="옵션ids",
+     *          in="query",
+     *          @OA\Schema(type="array", @OA\Items(type="number")),
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *       ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="unauthorized"
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="option_count_validation_failure, eatery_sync_failure"
+     *      ),
+     *       security={
+     *           {"bearerAuth": {}}
+     *       }
+     *     )
+     *
+     */
     public function store(User $user)
     {
         if (Auth::user()->id != $user->id) {
@@ -60,6 +120,55 @@ class UserCartCartItemsController extends Controller
         }
     }
 
+    /**
+     * @OA\Patch(
+     *      path="/user-cart/{user_id}/cart-items/{cart_item_id}",
+     *      tags={"카트"},
+     *      summary="카트 아이템 업데이트",
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          description="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="cart_item_id",
+     *          description="cart_item_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="quantity",
+     *          description="수량",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *       ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="unauthorized"
+     *      ),
+     *       security={
+     *           {"bearerAuth": {}}
+     *       }
+     *     )
+     *
+     */
     public function update(User $user, $id)
     {
         if (Auth::user()->id != $user->id) {
@@ -84,6 +193,45 @@ class UserCartCartItemsController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *      path="/user-cart/{user_id}/cart-items/{cart_item_id}",
+     *      tags={"카트"},
+     *      summary="카트 아이템 삭제",
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          description="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *          name="cart_item_id",
+     *          description="cart_item_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=204,
+     *          description="success",
+     *       ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="unauthorized"
+     *      ),
+     *       security={
+     *           {"bearerAuth": {}}
+     *       }
+     *     )
+     *
+     */
     public function destroy(User $user, $id)
     {
         if (Auth::user()->id != $user->id) {

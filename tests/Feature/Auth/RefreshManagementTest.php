@@ -24,7 +24,7 @@ class RefreshManagementTest extends TestCase
         $token = $this->authenticate();
 
         $response = $this->withHeaders(['Authorization' => 'Bearer '. $token])
-            ->json('GET', route('refresh.store'));
+            ->json('POST', route('refresh.store'));
 
         $response->assertStatus(200)
             ->assertJson([
@@ -38,7 +38,7 @@ class RefreshManagementTest extends TestCase
     /** @test */
     function only_authenticated_user_can_token_refres()
     {
-        $this->json('GET', route('refresh.store'))
+        $this->json('POST', route('refresh.store'))
             ->assertStatus(401);
     }
 }

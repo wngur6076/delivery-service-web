@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MenuDetailsResource;
-use App\Models\MenuGroup;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
 class MenusController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/menus/{id}",
-     *      operationId="getMenuById",
+     *      path="/menus/{menu_id}",
      *      tags={"메뉴"},
      *      summary="특정 메뉴 가져오기",
      *      description="특정 메뉴 아이템을 가져온다.",
-     *     @OA\Parameter(
-     *          name="id",
-     *          description="menu_id(메뉴아이디 적어주세요.)",
+     *      @OA\Parameter(
+     *          name="menu_id",
+     *          description="menu_id",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -28,7 +27,6 @@ class MenusController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="응답 성공",
-
      *       ),
      *       @OA\Response(response=400, description="Bad request"),
      *       security={
@@ -38,9 +36,9 @@ class MenusController extends Controller
      *
      * Returns list of projects
      */
-    public function show($menugroupId, $menuId)
+    public function show($id)
     {
-        $menu = MenuGroup::find($menugroupId)->menus()->findOrFail($menuId);
+        $menu = Menu::findOrFail($id);
 
         return response()->json([
             'status' => 'success',
