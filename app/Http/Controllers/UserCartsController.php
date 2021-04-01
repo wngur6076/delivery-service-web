@@ -8,6 +8,35 @@ use Illuminate\Support\Facades\Auth;
 
 class UserCartsController extends Controller
 {
+    /**
+     * @OA\Delete(
+     *      path="/user-carts/{user_id}",
+     *      tags={"카트"},
+     *      summary="카트 삭제",
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          description="user_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="number"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=204,
+     *          description="success",
+     *       ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="unauthorized"
+     *      ),
+     *       security={
+     *           {"bearerAuth": {}}
+     *       }
+     *     )
+     *
+     */
     public function destroy(User $user)
     {
         if (Auth::user()->id != $user->id) {

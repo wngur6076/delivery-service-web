@@ -24,7 +24,7 @@ use App\Http\Controllers\UserCartCartItemsController;
 
 Route::get('/eateries/{eatery}', [EateriesController::class, 'show']);
 
-Route::get('/menugroups/{menugroupId}/menus/{menuId}', [MenusController::class, 'show']);
+Route::get('/menus/{id}', [MenusController::class, 'show']);
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('/user-carts/{user}', [UserCartsController::class, 'destroy']);
