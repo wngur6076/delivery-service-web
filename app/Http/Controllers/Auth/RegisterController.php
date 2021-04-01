@@ -76,7 +76,7 @@ class RegisterController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => '입력하신 메일함에서 인증확인 메일을 확인해주세요.',
+            'message' => '회원가입 성공했어요.',
             'data' => $user,
         ], 201);
     }
