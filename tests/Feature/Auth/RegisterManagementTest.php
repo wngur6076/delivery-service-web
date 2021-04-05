@@ -17,6 +17,7 @@ class RegisterManagementTest extends TestCase
             'name' => '테스트',
             'email' => 'test@test.com',
             'password' => 'password',
+            'address' => '서울 강동구 양재대로 96길 79 101동 1001호'
         ], $overrides);
     }
 
@@ -28,6 +29,7 @@ class RegisterManagementTest extends TestCase
     /** @test */
     function user_can_be_register()
     {
+        $this->withoutExceptionHandling();
         $response = $this->json('POST', route('register.store'), $this->attributes());
 
         $response->assertStatus(201);
@@ -36,6 +38,7 @@ class RegisterManagementTest extends TestCase
             'data' => [
                 'name' => '테스트',
                 'email' => 'test@test.com',
+                'address' => '서울 강동구 양재대로 96길 79 101동 1001호',
             ],
         ]);
 
@@ -75,6 +78,16 @@ class RegisterManagementTest extends TestCase
         ]));
 
         $this->assertValidationError($response, 'password');
+    }
+
+     /** @test */
+    function address_is_required()
+    {
+        $response = $this->json('POST', route('register.store'), $this->attributes([
+            'address' => '',
+        ]));
+
+        $this->assertValidationError($response, 'address');
     }
 
     /** @test */

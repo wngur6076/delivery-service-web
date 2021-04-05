@@ -65,12 +65,14 @@ class RegisterController extends Controller
         $this->validate(request(), [
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
+            'address' => ['required'],
             'password' => ['required', 'min:8'],
         ]);
 
         $user = User::create([
             'name' => request('name'),
             'email' => request('email'),
+            'address' => request('address'),
             'password' => request('password'),
         ]);
 
