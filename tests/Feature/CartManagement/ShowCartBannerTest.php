@@ -77,7 +77,7 @@ class ShowCartBannerTest extends TestCase
             'data' => [
                 'cart_banner' => [
                     'cart_item_count' => 3,
-                    'cart_item_total' => '103,250',
+                    'cart_item_total' => '133,050',
                 ]
             ]
         ]);

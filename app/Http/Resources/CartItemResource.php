@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\CartItemOptionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CartItemResource extends JsonResource
@@ -11,6 +12,9 @@ class CartItemResource extends JsonResource
         return [
             'id' => $this->id,
             'quantity' => $this->quantity,
+            'menu_name' => $this->menu->name,
+            'menu_price' => $this->menu->price_in_wons,
+            'options' => CartItemOptionResource::collection($this->options),
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\User;
 use App\Models\Eatery;
 use App\Models\CartItem;
+use App\Models\MenuGroup;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -75,8 +76,11 @@ class UpdateCartItemTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $menu = Mockery::mock(Menu::class);
-        $menu->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $menuGroup = Mockery::mock(MenuGroup::class);
+        $menuGroup->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $menu = Menu::factory()->create([
+            'menu_group_id' => $menuGroup->id,
+        ]);
 
         $cartItem = CartItem::factory()->create([
             'cart_id' => $cart->id,

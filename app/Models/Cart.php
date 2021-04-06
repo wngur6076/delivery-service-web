@@ -17,6 +17,11 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function eatery()
+    {
+        return $this->hasOne(Eatery::class, 'id', 'eatery_id');
+    }
+
     public function items()
     {
         return $this->hasMany(CartItem::class);
@@ -46,7 +51,7 @@ class Cart extends Model
             $optionsPrice = $cartItem->options->map(function ($cartOption) {
                 return $cartOption->option->price;
             });
-            return $cartItem->menu->price * $cartItem->quantity + $optionsPrice->sum();
+            return ($cartItem->menu->price + $optionsPrice->sum()) * $cartItem->quantity;
         });
     }
 

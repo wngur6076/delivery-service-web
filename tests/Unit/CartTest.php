@@ -206,8 +206,8 @@ class CartTest extends TestCase
         $itemsPrice = $cart->getItemsPrice();
 
         $this->assertEquals(16200, $itemsPrice[0]);
-        $this->assertEquals(18000, $itemsPrice[1]);
-        $this->assertEquals(68000, $itemsPrice[2]);
-        $this->assertEquals(102200, $itemsPrice->sum());
+        $this->assertEquals(22000, $itemsPrice[1]);
+        $this->assertEquals(72000, $itemsPrice[2]);
+        $this->assertEquals(110200, $itemsPrice->sum());
     }
 }
