@@ -10,10 +10,10 @@ class CartItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'cart_item_id' => $this->id,
             'quantity' => $this->quantity,
-            'menu_name' => $this->menu->name,
-            'menu_price' => $this->menu->price_in_wons,
+            'name' => $this->menu->name,
+            'price' => $this->menu->price_in_wons,
             'options' => CartItemOptionResource::collection($this->options),
         ];
     }

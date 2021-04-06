@@ -74,20 +74,20 @@ class ShowCartTest extends TestCase
                 'cart' => [
                     'eatery_id' => 1,
                     'eatery_title' => '만랩커피 강남점',
-                    'items' => [
+                    'menus' => [
                         [
-                            'id' => 1,
-                            'menu_name' => '블랙 피넛 커피',
-                            'menu_price' => '4,800',
+                            'cart_item_id' => 1,
+                            'name' => '블랙 피넛 커피',
+                            'price' => '4,800',
                             'quantity' => 5,
                             'options' => [
                                 [
-                                    'option_name' => '순한맛',
-                                    'option_price' => '0',
+                                    'name' => '순한맛',
+                                    'price' => '0',
                                 ],
                                 [
-                                    'option_name' => '보통맛',
-                                    'option_price' => '1,500',
+                                    'name' => '보통맛',
+                                    'price' => '1,500',
                                 ],
                             ]
                         ],

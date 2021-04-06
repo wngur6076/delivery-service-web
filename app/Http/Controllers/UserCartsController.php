@@ -28,7 +28,7 @@ class UserCartsController extends Controller
                 'cart' => [
                     'eatery_id' => $cart->eatery->id,
                     'eatery_title' => $cart->eatery->title,
-                    'items' => CartItemResource::collection($cart->items),
+                    'menus' => CartItemResource::collection($cart->items),
                 ],
                 'payment_amount' => [
                     'order_amount' => number_format($cart->getItemsPrice()->sum()),

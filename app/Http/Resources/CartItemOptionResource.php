@@ -15,8 +15,8 @@ class CartItemOptionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'option_name' => $this->option->name,
-            'option_price' => $this->option->price_in_wons,
+            'name' => $this->option->name,
+            'price' => $this->option->price_in_wons,
         ];
     }
 }
