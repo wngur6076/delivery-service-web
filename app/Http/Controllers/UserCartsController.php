@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CartItemOptionResource;
 use App\Http\Resources\CartItemResource;
 use App\Models\User;
 use Illuminate\Http\Request;
