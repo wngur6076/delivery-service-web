@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Billing\PaymentGateway;
-use App\Http\Resources\CartResource;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CartItemResource;
+use App\Http\Resources\OrderResource;
 
 class UserCartOrdersController extends Controller
 {
@@ -28,21 +29,25 @@ class UserCartOrdersController extends Controller
         }
 
         $cart = $user->cart;
+
         $this->paymentGateway->charge($cart->getItemsPrice()->sum());
 
-        $disposable_spoon = request('to_shopkeeper')['disposable_spoon'] ? '' : '(수저포크X)';
+        // $disposable_spoon = request('to_shopkeeper')['disposable_spoon'] ? '' : '(수저포크X)';
+
+        $order = $user->orders()->create([
+            'eatery_title' => $cart->eatery->title,
+            'delivery_address' => $user->address,
+            'comment_to_shopkeeper' => '리뷰할게요.',
+            'comment_to_delivery_man' => '안전하게 와주세요.',
+            'order_amount' => $cart->getItemsPrice()->sum(),
+            'delivery_charge' => $cart->eatery->delivery_charge,
+            'menus' => json_encode(CartItemResource::collection($cart->items)),
+        ]);
 
         return response()->json([
-            'data' => [
-                'delivery_address' => $user->address,
-                'comment_to_shopkeeper' => request('to_shopkeeper')['comment'].$disposable_spoon,
-                'comment_to_delivery_man' => request('to_delivery_man')['comment'],
-                'cart' => new CartResource($cart),
-                'payment_amount' => [
-                    'order_amount' => number_format($cart->getItemsPrice()->sum()),
-                    'delivery_charge' => $cart->eatery->delivery_charge_in_wons,
-                ]
-            ]
+            'status' => 'success',
+            'message' => '주문 성공했어요.',
+            'data' => new OrderResource($order),
         ], 201);
     }
 }

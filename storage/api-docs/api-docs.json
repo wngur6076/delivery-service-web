@@ -142,11 +142,16 @@
                                 "required": [
                                     "name",
                                     "email",
-                                    "password"
+                                    "password",
+                                    "address"
                                 ],
                                 "properties": {
                                     "name": {
                                         "description": "Name",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "address",
                                         "type": "string"
                                     },
                                     "email": {
@@ -442,6 +447,37 @@
             }
         },
         "/user-carts/{user_id}": {
+            "get": {
+                "tags": [
+                    "카트"
+                ],
+                "summary": "카트 보기",
+                "operationId": "App\\Http\\Controllers\\UserCartsController::show",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "카트"

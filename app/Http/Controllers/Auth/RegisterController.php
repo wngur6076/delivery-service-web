@@ -17,11 +17,16 @@ class RegisterController extends Controller
      *          required=true,
      *          @OA\MediaType(mediaType="multipart/form-data",
      *              @OA\Schema(
-     *                  required={"name", "email","password"},
+     *                  required={"name", "email", "password", "address"},
      *                  @OA\Property(
      *                      property="name",
      *                      type="string",
      *                      description="Name"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      type="string",
+     *                      description="address"
      *                  ),
      *                  @OA\Property(
      *                      property="email",

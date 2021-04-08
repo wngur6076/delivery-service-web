@@ -71,7 +71,7 @@ class PurchaseCartTest extends TestCase
         $this->app->instance(PaymentGateway::class, $paymentGateway);
 
         $response = $this->actingAs($user, 'api')->json('POST', "/api/user-cart/{$user->id}/orders", [
-            'to_shopkeeper' => ['comment' => '리뷰할게요.', 'disposable_spoon' => false],
+            'to_shopkeeper' => ['comment' => '리뷰할게요.', 'disposable_spoon' => true],
             'to_delivery_man' => ['comment' => '안전하게 와주세요.'],
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
@@ -79,34 +79,29 @@ class PurchaseCartTest extends TestCase
         $response->assertStatus(201);
         $response->assertJson([
             'data' => [
+                'eatery_title' => '만랩커피 강남점',
                 'delivery_address' => '서울 강동구 양재대로 96길 79 101동 1001호',
-                'comment_to_shopkeeper' => '리뷰할게요.(수저포크X)',
+                'comment_to_shopkeeper' => '리뷰할게요.',
                 'comment_to_delivery_man' => '안전하게 와주세요.',
-                'cart' => [
-                    'eatery_id' => 1,
-                    'eatery_title' => '만랩커피 강남점',
-                    'menus' => [
-                        [
-                            'cart_item_id' => 1,
-                            'name' => '블랙 피넛 커피',
-                            'price' => '4,800',
-                            'quantity' => 2,
-                            'options' => [
-                                [
-                                    'name' => '순한맛',
-                                    'price' => '0',
-                                ],
-                                [
-                                    'name' => '보통맛',
-                                    'price' => '1,500',
-                                ],
-                            ]
-                        ],
-                    ]
-                ],
-                'payment_amount' => [
-                    'order_amount' => '12,600',
-                    'delivery_charge' => '2,000',
+                'order_amount' => '12,600',
+                'delivery_charge' => '2,000',
+                'menus' => [
+                    [
+                        'cart_item_id' => 1,
+                        'name' => '블랙 피넛 커피',
+                        'price' => '4,800',
+                        'quantity' => 2,
+                        'options' => [
+                            [
+                                'name' => '순한맛',
+                                'price' => '0',
+                            ],
+                            [
+                                'name' => '보통맛',
+                                'price' => '1,500',
+                            ],
+                        ]
+                    ],
                 ],
             ]
         ]);

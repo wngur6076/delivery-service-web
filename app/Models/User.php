@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Exceptions\EaterySyncException;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,6 +60,11 @@ class User extends Authenticatable implements JWTSubject
     public function cart()
     {
         return $this->hasOne(Cart::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function getCart()

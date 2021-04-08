@@ -59,6 +59,10 @@ class LoginController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => '로그인 성공했어요.',
+            'data' => [
+                'ttl' => config('jwt.ttl'),
+                'refresh_ttl' => config('jwt.refresh_ttl'),
+            ],
         ], 200)->header('Authorization', $token);
     }
 
