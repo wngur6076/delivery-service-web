@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CartItemResource;
+use App\Http\Resources\CartResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,11 +24,7 @@ class UserCartsController extends Controller
         return response()->json([
             'data' => [
                 'delivery_address' => $user->address,
-                'cart' => [
-                    'eatery_id' => $cart->eatery->id,
-                    'eatery_title' => $cart->eatery->title,
-                    'menus' => CartItemResource::collection($cart->items),
-                ],
+                'cart' => new CartResource($cart),
                 'payment_amount' => [
                     'order_amount' => number_format($cart->getItemsPrice()->sum()),
                     'delivery_charge' => $cart->eatery->delivery_charge_in_wons,

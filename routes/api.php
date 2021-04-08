@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RefreshController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserCartBannerController;
+use App\Http\Controllers\UserCartOrdersController;
 use App\Http\Controllers\UserCartCartItemsController;
 
 /*
@@ -34,6 +35,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('/user-cart/{user}/cart-items', [UserCartCartItemsController::class, 'store']);
     Route::patch('/user-cart/{user}/cart-items/{id}', [UserCartCartItemsController::class, 'update']);
     Route::delete('/user-cart/{user}/cart-items/{id}', [UserCartCartItemsController::class, 'destroy']);
+
+    Route::post('/user-cart/{user}/orders', [UserCartOrdersController::class, 'store']);
 });
 
 Route::prefix('auth')->group(function () {

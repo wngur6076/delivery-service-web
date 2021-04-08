@@ -75,10 +75,8 @@ class ShowCartBannerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson([
             'data' => [
-                'cart_banner' => [
-                    'cart_item_count' => 3,
-                    'cart_item_total' => '133,050',
-                ]
+                'cart_item_count' => 3,
+                'cart_item_total' => '133,050',
             ]
         ]);
     }

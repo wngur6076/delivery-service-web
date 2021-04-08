@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\CartManagement;
+namespace Tests\Feature;
 
 use Mockery;
 use Tests\TestCase;
@@ -10,32 +10,24 @@ use App\Models\Eatery;
 use App\Models\Option;
 use App\Models\MenuGroup;
 use App\Models\OptionGroup;
+use App\Billing\PaymentGateway;
+use App\Billing\FakePaymentGateway;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ShowCartTest extends TestCase
+class PurchaseCartTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    function guest_cannot_see_the_cart()
-    {
-        $user = User::factory()->create();
-
-        $response = $this->json('GET', "/api/user-carts/{$user->id}");
-
-        $response->assertStatus(401);
-    }
-
-    /** @test */
-    function user_can_see_the_cart()
+    public function customer_can_purchase_menus_to_a_eatery()
     {
         $this->withoutExceptionHandling();
         $user = User::factory()->create([
+            'email' => 'john@example.com',
             'address' => '서울 강동구 양재대로 96길 79 101동 1001호',
         ]);
         $cart = $user->getCart();
-
 
         $eatery = Eatery::factory()->create([
             'title' => '만랩커피 강남점',
@@ -72,15 +64,24 @@ class ShowCartTest extends TestCase
 
         $menu->optionGroups()->sync([$optionGroup->id]);
 
-        $cart->addItem($menu->id, 5, [$option1->id, $option2->id]);
+        $cart->addItem($menu->id, 2, [$option1->id, $option2->id]);
         $cart->eaterySync($eatery->id);
 
-        $response = $this->actingAs($user, 'api')->json('GET', "/api/user-carts/{$user->id}");
+        $paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $paymentGateway);
 
-        $response->assertStatus(200);
+        $response = $this->actingAs($user, 'api')->json('POST', "/api/user-cart/{$user->id}/orders", [
+            'to_shopkeeper' => ['comment' => '리뷰할게요.', 'disposable_spoon' => false],
+            'to_delivery_man' => ['comment' => '안전하게 와주세요.'],
+            'payment_token' => $paymentGateway->getValidTestToken(),
+        ]);
+
+        $response->assertStatus(201);
         $response->assertJson([
             'data' => [
                 'delivery_address' => '서울 강동구 양재대로 96길 79 101동 1001호',
+                'comment_to_shopkeeper' => '리뷰할게요.(수저포크X)',
+                'comment_to_delivery_man' => '안전하게 와주세요.',
                 'cart' => [
                     'eatery_id' => 1,
                     'eatery_title' => '만랩커피 강남점',
@@ -89,7 +90,7 @@ class ShowCartTest extends TestCase
                             'cart_item_id' => 1,
                             'name' => '블랙 피넛 커피',
                             'price' => '4,800',
-                            'quantity' => 5,
+                            'quantity' => 2,
                             'options' => [
                                 [
                                     'name' => '순한맛',
@@ -104,10 +105,12 @@ class ShowCartTest extends TestCase
                     ]
                 ],
                 'payment_amount' => [
-                    'order_amount' => '31,500',
+                    'order_amount' => '12,600',
                     'delivery_charge' => '2,000',
                 ],
             ]
         ]);
+
+        $this->assertEquals(12600, $paymentGateway->totalCharges());
     }
 }

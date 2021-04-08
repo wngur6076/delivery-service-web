@@ -51,10 +51,8 @@ class UserCartBannerController extends Controller
 
         return response()->json([
             'data' => [
-                'cart_banner' => [
-                    'cart_item_count' => $cart->items->count(),
-                    'cart_item_total' => number_format($cart->getItemsPrice()->sum()),
-                ]
+                'cart_item_count' => $cart->items->count(),
+                'cart_item_total' => number_format($cart->getItemsPrice()->sum()),
             ]
         ], 200);
     }
